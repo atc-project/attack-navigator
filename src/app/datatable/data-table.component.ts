@@ -384,7 +384,8 @@ export class DataTableComponent implements AfterViewInit {
     constructor(private dataService: DataService, private tabs: TabsComponent, private sanitizer: DomSanitizer, private viewModelsService: ViewModelsService, private configService: ConfigService) {
         this.ds = dataService;
         this.ds.getConfig().subscribe((config: Object) => {
-            this.ds.setUpURLs(config["enterprise_attack_url"],
+            this.ds.setUpURLs(config["react_url"],
+                                config["enterprise_attack_url"],
                                 config["pre_attack_url"],
                                 config["mobile_data_url"],
                                 config["taxii_server"]["enabled"],
@@ -392,6 +393,7 @@ export class DataTableComponent implements AfterViewInit {
                                 config["taxii_server"]["collections"]);
             var domain = config["domain"];
             this.customContextMenuItems = config["custom_context_menu_items"]
+
 
             if(domain === "mitre-enterprise"){
                 dataService.getEnterpriseData(false, config["taxii_server"]["enabled"]).subscribe((enterpriseData: Object[]) => {
@@ -403,6 +405,11 @@ export class DataTableComponent implements AfterViewInit {
                 dataService.getMobileData(false, config["taxii_server"]["enabled"]).subscribe((mobileData: Object[]) => {
                     // let bundle = mobileData[1]["objects"].concat(mobileData[0]["objects"]);
                     this.parseBundle(mobileData);
+                });
+            } else if (domain === "atc-react"){
+                dataService.getReactData(false, config["taxii_server"]["enabled"]).subscribe((reactData: Object[]) => {
+                    // let bundle = enterpriseData[1]["objects"].concat(enterpriseData[0]["objects"]);
+                    this.parseBundle(reactData);
                 });
             }
         });
@@ -441,6 +448,7 @@ export class DataTableComponent implements AfterViewInit {
             {name: "prepare", objects: bundle[1]["objects"]},
             {name: "act",     objects: bundle[0]["objects"]}
         ]
+
         for (let phase of phases) {
             // tactic info for this phase
             let tacOrders = {}
@@ -453,6 +461,17 @@ export class DataTableComponent implements AfterViewInit {
                 if(object.x_mitre_deprecated !== true && object.revoked !== true){
                     if(object.type === "attack-pattern"){
                         techniques[object.id] = object;
+                    } else if (object.type === "x-react-action"){
+                        techniques[object.id] = object;
+                    } else if(object.type === "x-react-stage"){
+                        //store tactic info by their IDs, since we don't yet have order
+                        tacticIDToDef[object.id] = {
+                          "tactic": object.x_react_shortname,
+                          "description": object.description,
+                          "phase": phase.name,
+                          "url": object["external_references"][0]["url"]
+                         }
+                         // console.log(tacticIDToDef[object.id])
                     } else if(object.type === "intrusion-set"){
                         threatGroups[object.id] = object;
                     } else if(object.type === "malware" || object.type === "tool"){
@@ -468,6 +487,9 @@ export class DataTableComponent implements AfterViewInit {
                             "url": object["external_references"][0]["url"]
                         }
                     } else if (object.type === "x-mitre-matrix") {
+                        //matrix defines the order of tactics in this phase
+                        tacOrders[object.name] = object.tactic_refs;
+                    } else if (object.type === "x-react-matrix") {
                         //matrix defines the order of tactics in this phase
                         tacOrders[object.name] = object.tactic_refs;
                     }

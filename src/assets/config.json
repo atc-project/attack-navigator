@@ -1,4 +1,5 @@
 {
+    "react_url": "https://raw.githubusercontent.com/atc-project/atc-react/develop/docs/react.json",
     "enterprise_attack_url": "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json",
     "pre_attack_url": "https://raw.githubusercontent.com/mitre/cti/master/pre-attack/pre-attack.json",
     "mobile_data_url": "https://raw.githubusercontent.com/mitre/cti/master/mobile-attack/mobile-attack.json",
@@ -12,10 +13,9 @@
         }
     },
 
-    "domain": "mitre-enterprise",
+    "domain": "atc-react",
 
     "custom_context_menu_items": [
-
     ],
 
     "default_layers": {
