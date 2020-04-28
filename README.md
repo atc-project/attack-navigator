@@ -5,7 +5,8 @@ The changes are:
 
 1. RE&CT STIX support added
 2. RE&CT `domain` support in the Navigator Layers added
-3. RE&CT stages are being used in place of ATT&CK tactics (for RE&CT `domain`)
+3. Response Stages are being used in place of ATT&CK tactics (for RE&CT `domain`)
+4. Response Actions are being used in place of ATT&CK techniques (for RE&CT `domain`)
 
 Basically, it supports both ATT&CK and RE&CT Layers.  
 You only need to use different `domains` in the Layer files if you would like to use both in one app.  
