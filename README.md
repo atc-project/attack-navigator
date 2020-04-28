@@ -1,6 +1,6 @@
 # RE&CT Navigator
 
-is a full compy of ATT&CK® Navigator. All the hard work was done my MITRE ATT&CK team.  
+is a full copy of the ATT&CK® Navigator. All the hard work was done by the MITRE ATT&CK team.  
 The changes are:
 
 1. RE&CT STIX support added
