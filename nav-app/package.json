@@ -2,6 +2,7 @@
   "name": "nav-app",
   "version": "1.0.0",
   "license": "Apache",
+  "homepage": "https://atc-project.github.io/react-navigator/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
