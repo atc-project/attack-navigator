@@ -10,6 +10,6 @@ COPY . ./
 # install packages and build 
 RUN npm install --unsafe-perm
 
-EXPOSE 4200
+EXPOSE 80
 
 CMD npm start

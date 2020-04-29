@@ -19,8 +19,8 @@
     ],
 
     "default_layers": {
-        "enabled": false,
-        "urls": ["assets/example.json", "https://raw.githubusercontent.com/mitre-attack/attack-navigator/master/layers/data/samples/Bear_APT.json"]
+        "enabled": true,
+        "urls": ["https://raw.githubusercontent.com/atc-project/atc-react/master/docs/react_navigator_profile.json"]
     },
 
     "comment_color": "yellow",
