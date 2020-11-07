@@ -7328,7 +7328,7 @@ var DataTableComponent = /** @class */ (function () {
         var tactics = []; //list of ordered tactics
         // ! the phases array defines the order of phases in the table; prepare comes before act
         var phases = [
-            { name: "prepare", objects: bundle[1]["objects"] },
+            //{name: "prepare", objects: bundle[1]["objects"]},
             { name: "act", objects: bundle[0]["objects"] }
         ];
         var _loop_2 = function (phase) {
@@ -7340,10 +7340,7 @@ var DataTableComponent = /** @class */ (function () {
             for (var i = 0; i < objects.length; i++) {
                 object = objects[i];
                 if (object.x_mitre_deprecated !== true && object.revoked !== true) {
-                    if (object.type === "attack-pattern") {
-                        techniques[object.id] = object;
-                    }
-                    else if (object.type === "x-react-action") {
+                    if (object.type === "x-react-action") {
                         techniques[object.id] = object;
                     }
                     else if (object.type === "x-react-stage") {
@@ -7356,48 +7353,24 @@ var DataTableComponent = /** @class */ (function () {
                         };
                         // console.log(tacticIDToDef[object.id])
                     }
-                    else if (object.type === "intrusion-set") {
-                        threatGroups[object.id] = object;
-                    }
-                    else if (object.type === "malware" || object.type === "tool") {
-                        software[object.id] = object;
-                    }
-                    else if (object.type === "relationship") {
-                        relationships[object.id] = object;
-                    }
-                    else if (object.type === "x-mitre-tactic") {
-                        //store tactic info by their IDs, since we don't yet have order
-                        tacticIDToDef[object.id] = {
-                            "tactic": object.x_mitre_shortname,
-                            "description": object.description,
-                            "phase": phase.name,
-                            "url": object["external_references"][0]["url"]
-                        };
-                    }
-                    else if (object.type === "x-mitre-matrix") {
-                        //matrix defines the order of tactics in this phase
-                        tacOrders[object.name] = object.tactic_refs;
-                    }
                     else if (object.type === "x-react-matrix") {
                         //matrix defines the order of tactics in this phase
                         tacOrders[object.name] = object.tactic_refs;
                     }
                 }
             }
-            if (Object.keys(tacOrders).length > 1) {
-                // multiple matrixes for this phase: mobile attack handling of multiple matrixes
-                // ! the order of this array determines the order of the matrixes
-                var orderedMatrixes = ["Device Access", "Network-Based Effects"].map(function (name) { return tacOrders[name]; });
-                for (var _i = 0, orderedMatrixes_1 = orderedMatrixes; _i < orderedMatrixes_1.length; _i++) {
-                    var tacOrder = orderedMatrixes_1[_i];
-                    tactics = tactics.concat(tacOrder.map(function (tacID) { return tacticIDToDef[tacID]; }));
-                }
-            }
-            else {
-                //only one matrix object for this phase
-                var tacOrder = tacOrders[Object.keys(tacOrders)[0]];
-                tactics = tactics.concat(tacOrder.map(function (tacID) { return tacticIDToDef[tacID]; }));
-            }
+            // if (Object.keys(tacOrders).length > 1) {
+            // multiple matrixes for this phase: mobile attack handling of multiple matrixes
+            // ! the order of this array determines the order of the matrixes
+            // let orderedMatrixes = ["Device Access", "Network-Based Effects"].map((name) => tacOrders[name])
+            // for (let tacOrder of orderedMatrixes) {
+            // tactics = tactics.concat(tacOrder.map((tacID) => tacticIDToDef[tacID]))
+            // }
+            // }
+            // else {
+            // only one matrix object for this phase
+            var tacOrder = tacOrders[Object.keys(tacOrders)[0]];
+            tactics = tactics.concat(tacOrder.map(function (tacID) { return tacticIDToDef[tacID]; }));
         };
         var object;
         for (var _i = 0, phases_1 = phases; _i < phases_1.length; _i++) {
